@@ -33,6 +33,11 @@ namespace ExcelDocTransfer.Context
 					.HasMaxLength(50)
 					.IsUnicode(true);
 
+				entity.Property(e => e.InvoiceNumber)
+				.IsRequired()
+				.HasMaxLength(50)
+				.IsUnicode(false);
+
 				entity.Property(e => e.CustomerCity)
 				.IsRequired()
 					.HasMaxLength(50)
