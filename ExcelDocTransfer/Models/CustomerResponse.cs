@@ -1,4 +1,6 @@
-﻿namespace ExcelDocTransfer.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ExcelDocTransfer.Models
 {
 	public class CustomerResponse
 	{
@@ -10,6 +12,8 @@
 		public string InvoiceNumber { get; set; }
 
 		public decimal Fees { get; set; }
+
+		[DisplayFormat(DataFormatString ="{0:dd.MM.yyyy}",ApplyFormatInEditMode =true)]
 		public DateTime VisitDate { get; set; }
 	}
 }

@@ -100,7 +100,7 @@ namespace ExcelDocTransfer.Controllers
 					ViewBag.Error = "Invalid file format";
 					return View();
 				}
-				var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "CustomerFiles", file.FileName);
+				var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "CustomerFiles");
 
 				if (!System.IO.File.Exists(filePath))
 					Directory.CreateDirectory(filePath);
@@ -129,7 +129,8 @@ namespace ExcelDocTransfer.Controllers
 
 				using (var stream = new FileStream(saveToPath, FileMode.Open))
 				{
-					_excelDataReader = ExcelReaderFactory.CreateBinaryReader(stream);
+					//_excelDataReader = ExcelReaderFactory.CreateBinaryReader(stream);
+					_excelDataReader = ExcelReaderFactory.CreateReader(stream);
 
 					//Datatable -> Tek bir veri kümesi	(Model)
 					//DataSet -> Birden fazla veri kümesi (Tablo) 
@@ -165,17 +166,19 @@ namespace ExcelDocTransfer.Controllers
 								_logger.LogWarning("Excel dosyasında bulunan müşteri adı zaten mevcut. Müşteri Adı: {InvoiceNumber}", InvoiceNumber);
 								continue; // Eğer müşteri adı zaten varsa, bu satırı atla
 							}
+						//	DateTime xyz;
+						//	DateTime.TryParse(dt.Rows[i][4].ToString(), out xyz);
 
 							var customerResponse = new CustomerResponse
 							{
 								CustomerName = dt.Rows[i][0].ToString().Trim(),
 								CustomerAddress = dt.Rows[i][1].ToString().Trim(),
 								CustomerCity = dt.Rows[i][2].ToString().Trim(),
-								InvoiceNumber = dt.Rows[i][2].ToString().Trim(),
+								InvoiceNumber = dt.Rows[i][3].ToString().Trim(),
 								//Fees = Convert.ToDecimal(dt.Rows[i][3]),
-								Fees = decimal.TryParse(dt.Rows[i][3].ToString(), out var fees) ? fees : 0,
+								Fees = decimal.TryParse(dt.Rows[i][4].ToString(), out var fees) ? fees : 0,
 								//VisitDate = Convert.ToDateTime(dt.Rows[i][4])
-								VisitDate =DateTime.TryParse(dt.Rows[i][4].ToString(), out var visitDate) ? visitDate : DateTime.MinValue
+								VisitDate =DateTime.TryParse(dt.Rows[i][5].ToString(), out var visitDate) ? visitDate : DateTime.MinValue
 							};
 
 

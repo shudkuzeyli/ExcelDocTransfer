@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ExcelDocTransfer.Models.CustomerResponse>
 
 
-<div class="row">
+@* <div class="row">
 	<div class=" col-xxl-12" style="font-size:x-large">
 		<div class="card card-xxl-stretch mb-5 mb-xl-x1-8">
 			<div class="card-header border-0 mb-xl-xl-8">
@@ -46,6 +46,70 @@
 			</table>
 		</div>
 	</div>
-</div>
+</div> *@
 
+<form asp-controller="DataUpload" asp-action="Index" method="post" enctype="multipart/form-data">
+	<div class="form-group">
+		<label for="file"> Excel dosyasını yükle</label>
+		<input type="file" name="file" />
+	</div>
+	<div class="form-group">
+		<input type="submit" value="Upload" class="btn btn-primary" />
+	</div>
+</form>
 
+<table id="Tablolar" style="width:100%">
+	<thead>
+		<tr>
+			<th class="col-1">İşlemler</th>
+			<th>@Html.DisplayNameFor(Model => Model.CustomerName)</th>
+			<th>@Html.DisplayNameFor(Model => Model.CustomerAddress)</th>
+			<th>@Html.DisplayNameFor(Model => Model.CustomerCity)</th>
+			<th>@Html.DisplayNameFor(Model => Model.InvoiceNumber)</th>
+			<th>@Html.DisplayNameFor(Model => Model.Fees)</th>
+			<th>@Html.DisplayNameFor(Model => Model.VisitDate)</th>
+		</tr>
+	</thead>
+	<tbody style="font-size: 2rem">
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.Id" data-toogle="tooltip" title="Düzenle" class=" btn btn-warning"><i style="font-size: 2rem" class="bi bi-plus"></i></a>
+					<a asp-action="Detail" asp-route-id="@item.Id" data-toogle="tooltip" title="Detay Gör" class=" btn btn-warning"><i style="font-size: 2rem" class="bi bi-person-vcard"></i></a>
+					<a asp-action="Delete" asp-route-id="@item.Id" data-toogle="tooltip" title="Sil" class=" btn btn-warning"><i style="font-size: 2rem" class="bi bi-trash3"></i></a>
+				</td>
+				<td>@Html.DisplayFor(modelItem => item.CustomerName)</td>
+				<td>@Html.DisplayFor(modelItem => item.CustomerAddress)</td>
+				<td>@Html.DisplayFor(modelItem => item.CustomerCity)</td>
+				<td>@Html.DisplayFor(modelItem => item.InvoiceNumber)</td>
+				<td>@Html.DisplayFor(modelItem => item.Fees)</td>
+				<td>@Html.DisplayFor(modelItem => item.VisitDate)</td>
+				@*Alttakini kullanmak istersen Model'deki DisplayFormat'ı kapatman gerek*@
+				@* <td>	@item.VisitDate.ToString("dd/MM/yyyy")</td> *@
+			</tr>
+		}
+
+</table>
+DDD -> Mikroservis/API (Çoklu katman)
+CQRS+MediaTR -> Monolitik üzerine geliştirme 
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+					$('#Tablolar').DataTable({
+							"paging": true,
+							"scrollCollapse": true,
+							"searching": true,
+							"ordering": true,
+							"info": true,
+							"language": {
+									"url": "https://cdn.datatables.net/plug-ins/2.2.2/i18n/tr.json",
+									"decimal": ",",
+									"search": "arar mısın:",
+
+							}
+					});
+			});
+	</script>
+	}
